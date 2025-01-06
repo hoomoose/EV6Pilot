@@ -140,20 +140,16 @@ void update_model(UIState *s,
     auto lead_count = model.getLeadsV3().size();
     if (lead_count > 0) {
       auto lead_one = model.getLeadsV3()[0];
-      scene.has_lead = lead_one.getProb() > scene.lead_detection_probability;
 
-      if (scene.has_lead) {
+      if (lead_one.getProb() > scene.lead_detection_probability) {
         const float lead_d = lead_one.getX()[0] * 2.;
         max_distance = std::clamp((float)(lead_d - fmin(lead_d * 0.35, 10.)), 0.0f, max_distance);
       }
-    } else {
-      scene.has_lead = false;
     }
   } else {
     auto lead_one = (*s->sm)["radarState"].getRadarState().getLeadOne();
-    scene.has_lead = lead_one.getModelProb() > scene.lead_detection_probability;
 
-    if (scene.has_lead) {
+    if (lead_one.getModelProb() > scene.lead_detection_probability) {
       const float lead_d = lead_one.getDRel() * 2.;
       max_distance = std::clamp((float)(lead_d - fmin(lead_d * 0.35, 10.)), 0.0f, max_distance);
     }
@@ -368,15 +364,12 @@ void ui_update_frogpilot_params(UIState *s) {
   scene.adjacent_path = scene.frogpilot_toggles.value("adjacent_paths").toBool();
   scene.adjacent_path_metrics = scene.frogpilot_toggles.value("adjacent_path_metrics").toBool();
   scene.always_on_lateral = scene.frogpilot_toggles.value("always_on_lateral").toBool();
-  scene.aol_status_bar = scene.frogpilot_toggles.value("always_on_lateral_status_bar").toBool();
   scene.big_map = scene.frogpilot_toggles.value("big_map").toBool();
   scene.blind_spot_path = scene.frogpilot_toggles.value("blind_spot_path").toBool();
   scene.camera_view = scene.frogpilot_toggles.value("camera_view").toDouble();
-  scene.cem_status_bar = scene.frogpilot_toggles.value("conditional_status_bar").toBool();
+  scene.cem_status = scene.frogpilot_toggles.value("cem_status").toBool();
   scene.compass = scene.frogpilot_toggles.value("compass").toBool();
   scene.conditional_experimental = scene.frogpilot_toggles.value("conditional_experimental_mode").toBool();
-  scene.conditional_limit = scene.frogpilot_toggles.value("conditional_limit").toDouble();
-  scene.conditional_limit_lead = scene.frogpilot_toggles.value("conditional_limit_lead").toDouble();
   scene.cpu_metrics = scene.frogpilot_toggles.value("cpu_metrics").toBool();
   scene.driver_camera_in_reverse = scene.frogpilot_toggles.value("driver_camera_in_reverse").toBool();
   scene.dynamic_path_width = scene.frogpilot_toggles.value("dynamic_path_width").toBool();
